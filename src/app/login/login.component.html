@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">MobileArts</a>
+      
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        </ul>
+
+        <div class="d-flex">
+            <a class="btn btn-outline-success" [routerLink]="['/login']">Login</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+  <div class="page-container">
+    <form (ngSubmit)="login(loginModelForm)" #loginModelForm="ngForm">
+        <div class="mb-3">
+          <label for="UserEmail" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="UserEmail" name="UserEmail" [(ngModel)]="UserEmail" #name="ngModel" required [ngModelOptions]="{ updateOn: 'blur' }" [ngClass]="{ 'is-invalid': name.invalid && (name.dirty || name.touched) }">
+          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          <div *ngIf="name.invalid && (name.dirty || name.touched)" class="form-error">
+            <div *ngIf="name.errors?.['required']">
+                Email is required.
+            </div>
+            <div *ngIf="name.errors?.['invalidEmail']">
+                Invalid email format.
+            </div>
+          </div>
+
+        </div>
+
+        <div class="mb-3">
+          <label for="Password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="Password" name="Password" [(ngModel)]="Password" required #pass="ngModel">
+
+          <div *ngIf="pass.invalid && (pass.dirty || pass.touched)" class="form-error">
+            <div *ngIf="pass.errors?.['required']">
+                Password is required.
+            </div>
+          </div>
+        </div>
+
+
+        <div *ngIf="message != ''" class="mb-3">
+          <div class="form-error">
+            {{message}}
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+  </div>

@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">MobileArts</a>
+      
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto ms-auto mb-2 mb-lg-0">
+
+            <li class="nav-item">
+
+                <input type="radio" id="android" name="store" (change)="onStoreChange('android')" [checked]="true" [(ngModel)]="store"/>
+                <label for="android" class="switch">
+                    <img src="../../assets/images/android-logo.png" alt="android" class="logo" />
+                </label>
+
+                <input type="radio" id="ios" name="store" (change)="onStoreChange('ios')" [(ngModel)]="store"/>
+                <label for="ios" class="switch">
+                    <img src="../../assets/images/ios-logo.png" alt="Logo 2" class="logo" />
+                </label>
+                  
+            </li>
+
+
+            <li class="nav-item ms-5">
+              <select class="form-select" [(ngModel)]="selectedCountry" (change)="onCountrySelected()" aria-label="Default select example">
+                <option *ngFor="let country of countries" [value]="country">{{country}}</option>
+              </select>
+            </li>
+
+            <li class="nav-item ms-5">
+                
+                <input type="date" class="form-control"  [(ngModel)]="selectedDate" (change)="onDateSelected()">
+            </li>
+        </ul>
+
+        <div class="d-flex">
+            <!-- <a class="btn btn-outline-success" [routerLink]="['/login']">Login</a> -->
+        </div>
+      </div>
+    </div>
+  </nav>
