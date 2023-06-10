@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from '../Shared/auth_service';
 import { GenresService } from '../Shared/genre_service';
 import { GenreRequest } from '../Models/GenreRequest';
-import { GenreRankingModel } from '../Models/GenreRankingModel';
 import { GenreModel } from '../Models/GenreModel';
+import { GenreComponent } from './genre/genre.component';
 
 @Component({
   selector: 'app-rankings',
@@ -14,18 +14,29 @@ import { GenreModel } from '../Models/GenreModel';
 })
 export class RankingsComponent implements OnInit{
 
-
-  selectedDate = '2023-06-06';
+  //auth parameters
   isValid = true;
   token = '';
 
-  countries = ['US','CN','AR','BR','FR','DE','JP','PL','PT','RU'];
-
-  selectedCountry = this.countries[0];
 
   genres : GenreModel[] = [];
 
+  displayedGenres : GenreModel[] = [];
+
+  countries = ['US','CN','AR','BR','FR','DE','JP','PL','PT','RU'];
+
+  //request parameters
+  selectedDate = '2023-06-09';
+  selectedCountry = this.countries[0];
   store = 'android';
+
+
+  //pagination parameters
+  pageSize = 3;
+  currentPage = 1;
+  showLoadMore : boolean = true;
+
+  loading = false;
 
   ngOnInit(): void {
     if(!this.cookieService.check('token')){
@@ -47,11 +58,49 @@ export class RankingsComponent implements OnInit{
     });
 
 
+    this.loading = true;
     var genreReq = new GenreRequest();
 
     genreReq.date = this.selectedDate;
     genreReq.country = this.selectedCountry;
     genreReq.store = this.store;
+
+    this.currentPage = 1;
+    this.showLoadMore = true;
+
+    this.genresService.getGenres(genreReq)
+    .then(
+      (res : any) => {
+        if(res['status'] == 401 || res['status'] == 400){
+          console.log(res['title']);
+        }
+        else{
+          this.genres = res;
+          this.loadMore();
+        }
+        this.loading =false;
+      }
+    );
+    
+  }
+
+
+  constructor(private cookieService : CookieService,private router : Router,private authService : AuthService
+    ,private genresService : GenresService){
+    
+  }
+
+
+  loadGenres(){
+    this.loading = true;
+    var genreReq = new GenreRequest();
+
+    genreReq.date = this.selectedDate;
+    genreReq.country = this.selectedCountry;
+    genreReq.store = this.store;
+
+    this.currentPage = 1;
+    this.showLoadMore = true;
 
     this.genresService.getGenres(genreReq)
     .then(
@@ -66,18 +115,12 @@ export class RankingsComponent implements OnInit{
             console.log(elem);
           })
         }
+        this.loading =false;
+
+        this.loadMore();
       }
     );
-    
   }
-
-
-  constructor(private cookieService : CookieService,private router : Router,private authService : AuthService
-    ,private genresService : GenresService){
-    
-  }
-
-
 
   onStoreChange(store : string){
     if(store == 'android'){
@@ -95,6 +138,36 @@ export class RankingsComponent implements OnInit{
 
   onDateSelected(){
     console.log(this.selectedDate);
+  }
+
+
+
+
+
+  loadMore(): void {
+    this.currentPage++;
+    const nextPageItems = this.getSubsetOfItems(this.currentPage);
+  
+    if (nextPageItems.length === 0) {
+      this.showLoadMore = false; // No more items to load
+    }
+  
+    // Update the displayedGenres array with the newly fetched items
+    this.displayedGenres.push(...nextPageItems);
+  }
+  
+
+  getSubsetOfItems(page: number): any[] {
+    const startIndex = (page - 1) * this.pageSize;
+    const endIndex = page * this.pageSize;
+    return this.genres.slice(startIndex, endIndex);
+  }
+
+
+  onGenreClick(genre : GenreModel){
+    this.genresService.selectedGenre = genre;
+    const routeParams = {store: this.store,country: this.selectedCountry,date:this.selectedDate};
+    this.router.navigate(["rankings/genre-apps",routeParams]);
   }
 
 }

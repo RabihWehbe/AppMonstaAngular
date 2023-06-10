@@ -9,6 +9,7 @@ import { AuthService } from './Shared/auth_service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { GenresService } from './Shared/genre_service';
 import { CacheInterceptor } from './Shared/interceptor';
+import { AppService } from './Shared/app_service';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { CacheInterceptor } from './Shared/interceptor';
     HttpClientModule
   ],
   providers: [AuthService,GenresService,
-    { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
+    AppService
   ],
   bootstrap: [AppComponent]
 })

@@ -15,6 +15,8 @@ export class GenresService{
 
     public genres : GenreModel[] = [];
 
+    public selectedGenre : GenreModel = new GenreModel();
+
     constructor(private http : HttpClient,private cookieService : CookieService){
     }
 
@@ -63,7 +65,7 @@ export class GenresService{
                     resolve(null);
                 }
 
-                this.http.get(API_URLS.base_url + API_URLS.aggregatedGenres_url,{headers,params})
+                this.http.get(API_URLS.base_url + API_URLS.aggregatedGenres_url,{params,headers})
                 .subscribe(
                     (res : any) =>{
                         res.forEach((element : any) => {

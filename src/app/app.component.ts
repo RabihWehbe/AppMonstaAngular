@@ -9,6 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class AppComponent implements OnInit{
 
+  title = "";
 
   ngOnInit(): void {
     

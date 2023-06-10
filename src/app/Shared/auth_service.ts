@@ -46,12 +46,15 @@ export class AuthService{
 
     checkHealth(token : string) : Promise<boolean>{
         return new Promise((resolve,reject) => {
+            var token = this.cookieService.get('token');
             const headers = new HttpHeaders().set("Authorization",`Bearer ${token}`);
             this.http.get(API_URLS.base_url + API_URLS.check_token_url,{headers}).subscribe(
                 (res) => {
+                    console.log(res);
                     resolve(true);
                 },
                 (error) => {
+                    console.log(error);
                     resolve(false);
                 }
             );

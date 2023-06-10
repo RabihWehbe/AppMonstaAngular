@@ -39,3 +39,29 @@
       </div>
     </div>
   </nav>
+
+
+  <div class="page-container">
+    <div *ngIf="loading; else elseBlock">
+      <h1>loading</h1>
+    </div>
+  
+    <ng-template #elseBlock>
+      <div class="container">
+        <div class="row">
+          <div class="col-4 mb-3" *ngFor="let genre of displayedGenres">
+            <a class="text-decoration-none" (click)="onGenreClick(genre)">
+              <app-genre [genre]="genre" [store]="store"></app-genre>
+            </a>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col">
+            <button *ngIf="showLoadMore" (click)="loadMore()" class="btn btn-primary">Load More</button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  

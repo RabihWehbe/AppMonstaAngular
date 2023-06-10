@@ -9,5 +9,7 @@ export class API_URLS{
 
     public static genresRanking_url ="api/Monsta/genresRanking";
 
-    public static aggregatedGenres_url = "api/Monsta/AggregatedGenres";
+    public static aggregatedGenres_url = "api/Monsta/aggregatedGenres";
+
+    public static app_url = "api/Monsta/AppDetails";
 }

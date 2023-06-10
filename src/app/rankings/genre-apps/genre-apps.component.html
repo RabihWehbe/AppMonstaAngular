@@ -1,0 +1,66 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">MobileArts</a>
+      
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto ms-auto mb-2 mb-lg-0">
+
+            <li class="nav-item">
+
+                <div class="nav-link" *ngIf="store == 'android'; else elseBlock">
+                    <img src="../../../assets/images/android-logo.png" alt="" width="30" height="30" class="d-inline-block align-text-top">
+                </div>
+
+                <ng-template #elseBlock>
+                    <div class="nav-link">
+                        <img src="../../../assets/images/ios-logo.png" alt="" width="30" height="30" class="d-inline-block align-text-top">
+                    </div>
+                </ng-template>
+                  
+            </li>
+
+
+            <li class="nav-item ms-5">
+              <div class="nav-link">
+                {{country}}
+              </div>
+            </li>
+
+            <li class="nav-item ms-5">
+                <div class="nav-link">
+                    {{date}}
+                </div>
+            </li>
+        </ul>
+
+        <div class="d-flex">
+            <!-- <a class="btn btn-outline-success" [routerLink]="['/login']">Login</a> -->
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+  <div class="page-container">
+    <h1>{{genre.genre_name}}</h1>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-4 mb-3" *ngFor="let app of displayedApps">
+            <a class="text-decoration-none" (click)="onAppClick(app)">
+              <app-comp [app]="app"></app-comp>
+            </a>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col">
+            <button *ngIf="showLoadMore" (click)="loadMore()" class="btn btn-primary">Load More</button>
+          </div>
+        </div>
+      </div>
+
+  </div>
+
+

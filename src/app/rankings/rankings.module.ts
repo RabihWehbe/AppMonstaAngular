@@ -3,19 +3,24 @@ import { CommonModule } from '@angular/common';
 
 import { RankingsRoutingModule } from './rankings-routing.module';
 import { RankingsComponent } from './rankings.component';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
-
+import { GenreComponent } from './genre/genre.component';
+import { GenreAppsComponent } from './genre-apps/genre-apps.component';
+import { AppCompComponent } from './app-comp/app-comp.component';
+import { AppDetailsComponent } from './app-details/app-details.component';
 
 @NgModule({
   declarations: [
-    RankingsComponent
+    RankingsComponent,
+    GenreComponent,
+    GenreAppsComponent,
+    AppCompComponent,
+    AppDetailsComponent,
   ],
   imports: [
     CommonModule,
     RankingsRoutingModule,
     FormsModule,
-    BsDatepickerModule.forRoot()
   ]
 })
 export class RankingsModule { }
