@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppModel } from 'src/app/Models/AppModel';
 import { GenreModel } from 'src/app/Models/GenreModel';
 import { GenreRequest } from 'src/app/Models/GenreRequest';
@@ -34,7 +34,7 @@ export class GenreAppsComponent implements OnInit{
 
   displayedApps : AppModel[] = [];
 
-  constructor(private route : ActivatedRoute,private genresService : GenresService,private appService : AppService){
+  constructor(private router: Router,private route : ActivatedRoute,private genresService : GenresService,private appService : AppService){
 
   }
 
@@ -65,7 +65,16 @@ export class GenreAppsComponent implements OnInit{
     nextPageItems.forEach((id) => {
       this.appService.getAppById(id,genreRequest)
       .then((app) => {
-        this.displayedApps.push(app);
+        if(app['status'] == 400){
+          this.displayedApps.push(new AppModel());
+        }
+        else this.displayedApps.push(app);
+      })
+      .catch((error) => {
+        var appParam = new AppModel();
+        appParam.icon_url = "Error";
+        appParam.id = id;
+        this.displayedApps.push(appParam);
       });
     });
 
@@ -80,7 +89,14 @@ export class GenreAppsComponent implements OnInit{
 
 
   onAppClick(app : AppModel){
-    console.log(app.id);
+    if(app.icon_url == "Error"){
+      return;
+    }
+    else{
+      this.appService.selectedApp = app;
+      const routeParams = {store: this.store,country: this.country,date: this.date};
+      this.router.navigate(["rankings/app-details",routeParams]);
+    }
   }
 
 }

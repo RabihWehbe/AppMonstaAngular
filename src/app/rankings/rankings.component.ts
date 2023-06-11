@@ -38,6 +38,9 @@ export class RankingsComponent implements OnInit{
 
   loading = false;
 
+  //validation params:
+  valMessage = "";
+
   ngOnInit(): void {
     if(!this.cookieService.check('token')){
       console.log("check cookie in ranking");
@@ -68,6 +71,8 @@ export class RankingsComponent implements OnInit{
     this.currentPage = 1;
     this.showLoadMore = true;
 
+    this.displayedGenres = [];
+
     this.genresService.getGenres(genreReq)
     .then(
       (res : any) => {
@@ -80,7 +85,10 @@ export class RankingsComponent implements OnInit{
         }
         this.loading =false;
       }
-    );
+    ).catch((error) => {
+      this.valMessage = "Something went wrong please try again later";
+      this.loading = false;
+    });
     
   }
 
@@ -102,42 +110,48 @@ export class RankingsComponent implements OnInit{
     this.currentPage = 1;
     this.showLoadMore = true;
 
+    this.displayedGenres = [];
+    this.genres = [];
+    this.valMessage = "";
+
     this.genresService.getGenres(genreReq)
     .then(
       (res : any) => {
         if(res['status'] == 400){
+          console.log('app error');
           console.log(res['title']);
         }
         else{
           this.genres = res;
-
-          this.genres.forEach((elem : GenreModel) => {
-            console.log(elem);
-          })
         }
         this.loading =false;
 
         this.loadMore();
       }
-    );
+    ).catch((error) => {
+      console.log('Backend error');
+      console.log(error);
+      this.loading = false;
+      this.valMessage = "unauthorized content, please try again with different search parameters";
+      console.log("val message: "+this.valMessage);
+      // Display the error message in the UI as per your requirement
+  });
   }
 
   onStoreChange(store : string){
-    if(store == 'android'){
-      console.log(`selected store: ${store}`);
-    }
-    else if(store == 'ios'){
-      console.log(`selected store: ${store}`);
-    }
+    this.store = store;
+    this.loadGenres();
   }
 
 
   onCountrySelected(){
     console.log(this.selectedCountry);
+    this.loadGenres();
   }
 
   onDateSelected(){
     console.log(this.selectedDate);
+    this.loadGenres();
   }
 
 
@@ -170,4 +184,9 @@ export class RankingsComponent implements OnInit{
     this.router.navigate(["rankings/genre-apps",routeParams]);
   }
 
+
+  logout(){
+    this.cookieService.delete('token');
+    this.router.navigate(['']);
+  }
 }

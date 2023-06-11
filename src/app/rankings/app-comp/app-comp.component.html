@@ -1,4 +1,4 @@
-<div class="card" style="width: 18rem;">
+<div *ngIf="app.icon_url !== 'Error';else errorBlock" class="card mt-4" style="width: 18rem;">
     <img [src]="app.icon_url" class="card-img-top" alt="image">
   
     <div class="card-body">
@@ -7,3 +7,11 @@
       <p class="card-text">{{app.all_rating}}</p>
     </div>
 </div>
+
+<ng-template #errorBlock>
+  <div class="error-card">
+    <h2>Error Message</h2>
+    <p>Something went wrong with app_id: {{app.id}}</p>
+  </div>
+  
+</ng-template>

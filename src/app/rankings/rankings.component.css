@@ -26,3 +26,9 @@ input[type="radio"] {
     display: inline-block;
     vertical-align: middle;
   }
+
+
+  .error{
+    font-size: 1.25rem;
+    color: crimson;
+  }

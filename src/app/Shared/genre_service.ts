@@ -60,9 +60,10 @@ export class GenresService{
                 params = params.append('country',genreRequest.country);
 
                 try {
-                    await this.getGenreRankings(genreRequest);   
+                    await this.getGenreRankings(genreRequest); 
+                    console.log(`genre rankings length: ${this.genreRankings.length}`)  
                 } catch (error) {
-                    resolve(null);
+                    reject(error);
                 }
 
                 this.http.get(API_URLS.base_url + API_URLS.aggregatedGenres_url,{params,headers})
@@ -88,7 +89,7 @@ export class GenresService{
                         resolve(this.genres);
                     },
                     (error)=>{
-                        resolve(error.error)
+                        reject(error.error);
                     }
                 )
 

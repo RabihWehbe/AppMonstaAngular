@@ -10,6 +10,9 @@ import { AppModel } from "../Models/AppModel";
 })
 export class AppService{
 
+
+    public selectedApp : AppModel = new AppModel();
+
     constructor(private http : HttpClient,private  cookieService : CookieService){
 
     }
@@ -32,7 +35,7 @@ export class AppService{
                         resolve(res);
                     },
                     (error) => {
-                        resolve(error);
+                        reject(error);
                     }
                 );
             }
